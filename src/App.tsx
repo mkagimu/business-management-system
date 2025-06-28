@@ -10,7 +10,12 @@ import Shop from './components/Shop/Shop';
 import HR from './components/HR/HR';
 import Finance from './components/Finance/Finance';
 import Settings from './components/Settings/Settings';
-import SMS from './components/SMS';
+import SMS from './components/SMS/SMS';
+import Contracts from './components/Contracts/Contracts';
+import Documents from './components/Documents/Documents';
+import Support from './components/Support/Support';
+import Events from './components/Events/Events';
+import Assets from './components/Assets/Assets';
 
 function App() {
   return (
@@ -27,6 +32,11 @@ function App() {
           <Route path="finance" element={<Finance />} />
           <Route path="settings" element={<Settings />} />
           <Route path="sms" element={<SMS />} />
+          <Route path="contracts" element={<Contracts />} />
+          <Route path="documents" element={<Documents />} />
+          <Route path="support" element={<Support />} />
+          <Route path="events" element={<Events />} />
+          <Route path="assets" element={<Assets />} />
         </Route>
       </Routes>
     </Router>

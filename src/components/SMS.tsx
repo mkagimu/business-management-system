@@ -1,11 +1,4 @@
 import React from 'react';
+import SMS from './SMS/SMS';
 
-const SMS = () => {
-  return (
-    <div style={{ padding: 32, fontSize: 24 }}>
-      {/* SMS content will go here */}
-    </div>
-  );
-};
-
-export default SMS; 
+export default SMS;
