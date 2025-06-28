@@ -15,23 +15,6 @@
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
     transition: background 0.3s ease;
   }
-  
-  /* Glass theme styles */
-  .glass {
-    background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255,255,255,0.2);
-  }
-  
-  /* Dark theme styles */
-  .dark {
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-  }
-  
-  /* Light theme styles */
-  .light {
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-  }
 }
 
 @layer utilities {
@@ -93,58 +76,37 @@
     }
   }
   
-  /* Glassmorphism utilities */
-  .glass-card {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-  }
-  
-  .glass-button {
-    background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    transition: all 0.3s ease;
-  }
-  
-  .glass-button:hover {
-    background: rgba(255, 255, 255, 0.3);
-    transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-  }
-  
   /* Custom scrollbar */
   ::-webkit-scrollbar {
     width: 8px;
   }
 
   ::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(148, 163, 184, 0.1);
     border-radius: 4px;
   }
 
   ::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.3);
+    background: rgba(148, 163, 184, 0.3);
     border-radius: 4px;
     transition: background 0.3s ease;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.5);
+    background: rgba(148, 163, 184, 0.5);
   }
   
   /* Dark theme scrollbar */
   .dark ::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(71, 85, 105, 0.2);
   }
   
   .dark ::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(148, 163, 184, 0.2);
   }
   
   .dark ::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.3);
+    background: rgba(148, 163, 184, 0.3);
   }
   
   /* Light theme scrollbar */
@@ -198,4 +160,77 @@
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
+}
+
+/* Enhanced contrast for better readability */
+.dark {
+  color-scheme: dark;
+}
+
+.light {
+  color-scheme: light;
+}
+
+/* Ensure proper contrast in all themes */
+.dark .text-slate-900 {
+  color: #f8fafc !important;
+}
+
+.dark .text-slate-800 {
+  color: #f1f5f9 !important;
+}
+
+.dark .text-slate-700 {
+  color: #e2e8f0 !important;
+}
+
+.dark .text-slate-600 {
+  color: #cbd5e1 !important;
+}
+
+.light .text-white {
+  color: #0f172a !important;
+}
+
+/* Enhanced borders and outlines */
+.border {
+  border-width: 1px;
+}
+
+.border-2 {
+  border-width: 2px;
+}
+
+/* Better button styling */
+button {
+  font-weight: 600;
+}
+
+/* Enhanced table styling */
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+th, td {
+  border-bottom: 1px solid;
+}
+
+.dark th,
+.dark td {
+  border-color: #475569;
+}
+
+.light th,
+.light td {
+  border-color: #e2e8f0;
+}
+
+/* Card styling improvements */
+.card {
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+.dark .card {
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px 0 rgba(0, 0, 0, 0.2);
 }

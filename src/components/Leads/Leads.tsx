@@ -3,8 +3,10 @@ import { Plus, Search, Filter, MoreVertical, Phone, Mail, DollarSign, Edit, Tras
 import { Lead } from '../../types';
 import { mockLeads, mockOwners, mockTags } from '../../data/mockData';
 import LeadWizardModal from './LeadWizardModal';
+import { useTheme } from '../../contexts/ThemeContext';
 
 const Leads = () => {
+  const { theme } = useTheme();
   const [leads, setLeads] = useState<Lead[]>(mockLeads);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
@@ -29,13 +31,13 @@ const Leads = () => {
 
   const getStatusColor = (status: Lead['status']) => {
     switch (status) {
-      case 'new': return 'bg-gray-100 text-gray-800';
-      case 'contacted': return 'bg-blue-100 text-blue-800';
-      case 'qualified': return 'bg-yellow-100 text-yellow-800';
-      case 'proposal': return 'bg-purple-100 text-purple-800';
-      case 'converted': return 'bg-green-100 text-green-800';
-      case 'lost': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'new': return 'bg-gray-100 text-gray-800 border-gray-300';
+      case 'contacted': return 'bg-blue-100 text-blue-800 border-blue-300';
+      case 'qualified': return 'bg-yellow-100 text-yellow-800 border-yellow-300';
+      case 'proposal': return 'bg-purple-100 text-purple-800 border-purple-300';
+      case 'converted': return 'bg-green-100 text-green-800 border-green-300';
+      case 'lost': return 'bg-red-100 text-red-800 border-red-300';
+      default: return 'bg-gray-100 text-gray-800 border-gray-300';
     }
   };
 
@@ -91,15 +93,19 @@ const Leads = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className={`space-y-6 p-6 ${theme === 'dark' ? 'bg-slate-900' : 'bg-slate-50'} min-h-screen`}>
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Leads</h1>
-          <p className="text-gray-600 mt-1">Manage your potential customers and track conversions</p>
+          <h1 className={`text-3xl font-bold ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>
+            Leads
+          </h1>
+          <p className={`mt-1 ${theme === 'dark' ? 'text-slate-400' : 'text-slate-600'}`}>
+            Manage your potential customers and track conversions
+          </p>
         </div>
         <button 
           onClick={() => setShowAddModal(true)}
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
+          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2 border border-blue-600 font-semibold"
         >
           <Plus size={20} />
           <span>Add Lead</span>
@@ -107,43 +113,87 @@ const Leads = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-          <div className="text-2xl font-bold text-gray-900">{filteredLeads.length}</div>
-          <div className="text-sm text-gray-600">Total Leads</div>
+        <div className={`p-6 rounded-xl border ${
+          theme === 'dark' 
+            ? 'bg-slate-800 border-slate-700' 
+            : 'bg-white border-slate-200'
+        }`}>
+          <div className={`text-2xl font-bold ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>
+            {filteredLeads.length}
+          </div>
+          <div className={`text-sm ${theme === 'dark' ? 'text-slate-400' : 'text-slate-600'}`}>
+            Total Leads
+          </div>
         </div>
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+        <div className={`p-6 rounded-xl border ${
+          theme === 'dark' 
+            ? 'bg-slate-800 border-slate-700' 
+            : 'bg-white border-slate-200'
+        }`}>
           <div className="text-2xl font-bold text-green-600">{qualifiedLeads}</div>
-          <div className="text-sm text-gray-600">Qualified</div>
+          <div className={`text-sm ${theme === 'dark' ? 'text-slate-400' : 'text-slate-600'}`}>
+            Qualified
+          </div>
         </div>
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+        <div className={`p-6 rounded-xl border ${
+          theme === 'dark' 
+            ? 'bg-slate-800 border-slate-700' 
+            : 'bg-white border-slate-200'
+        }`}>
           <div className="text-2xl font-bold text-blue-600">${totalValue.toLocaleString()}</div>
-          <div className="text-sm text-gray-600">Pipeline Value</div>
+          <div className={`text-sm ${theme === 'dark' ? 'text-slate-400' : 'text-slate-600'}`}>
+            Pipeline Value
+          </div>
         </div>
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+        <div className={`p-6 rounded-xl border ${
+          theme === 'dark' 
+            ? 'bg-slate-800 border-slate-700' 
+            : 'bg-white border-slate-200'
+        }`}>
           <div className="text-2xl font-bold text-red-600">{overdueLeads}</div>
-          <div className="text-sm text-gray-600">Overdue Follow-Ups</div>
+          <div className={`text-sm ${theme === 'dark' ? 'text-slate-400' : 'text-slate-600'}`}>
+            Overdue Follow-Ups
+          </div>
         </div>
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+        <div className={`p-6 rounded-xl border ${
+          theme === 'dark' 
+            ? 'bg-slate-800 border-slate-700' 
+            : 'bg-white border-slate-200'
+        }`}>
           <div className="text-2xl font-bold text-purple-600">{conversionRate}%</div>
-          <div className="text-sm text-gray-600">Conversion Rate</div>
+          <div className={`text-sm ${theme === 'dark' ? 'text-slate-400' : 'text-slate-600'}`}>
+            Conversion Rate
+          </div>
         </div>
       </div>
 
-      <div className="flex flex-wrap items-center gap-4 bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
+      <div className={`flex flex-wrap items-center gap-4 p-4 rounded-xl border ${
+        theme === 'dark' 
+          ? 'bg-slate-800 border-slate-700' 
+          : 'bg-white border-slate-200'
+      }`}>
         <div className="flex items-center gap-2">
-          <Search size={18} className="text-gray-400" />
+          <Search size={18} className={theme === 'dark' ? 'text-slate-400' : 'text-slate-500'} />
           <input
             type="text"
             placeholder="Search leads..."
-            className="px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className={`px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+              theme === 'dark'
+                ? 'bg-slate-700 border-slate-600 text-white placeholder-slate-400'
+                : 'bg-white border-slate-300 text-slate-900 placeholder-slate-500'
+            }`}
             value={searchTerm}
             onChange={e => setSearchTerm(e.target.value)}
           />
         </div>
         <div className="flex items-center gap-2">
-          <Filter size={18} className="text-gray-400" />
+          <Filter size={18} className={theme === 'dark' ? 'text-slate-400' : 'text-slate-500'} />
           <select
-            className="px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className={`px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+              theme === 'dark'
+                ? 'bg-slate-700 border-slate-600 text-white'
+                : 'bg-white border-slate-300 text-slate-900'
+            }`}
             value={statusFilter}
             onChange={e => setStatusFilter(e.target.value)}
           >
@@ -157,9 +207,13 @@ const Leads = () => {
           </select>
         </div>
         <div className="flex items-center gap-2">
-          <Users size={18} className="text-gray-400" />
+          <Users size={18} className={theme === 'dark' ? 'text-slate-400' : 'text-slate-500'} />
           <select
-            className="px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className={`px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+              theme === 'dark'
+                ? 'bg-slate-700 border-slate-600 text-white'
+                : 'bg-white border-slate-300 text-slate-900'
+            }`}
             value={ownerFilter}
             onChange={e => setOwnerFilter(e.target.value)}
           >
@@ -170,9 +224,13 @@ const Leads = () => {
           </select>
         </div>
         <div className="flex items-center gap-2">
-          <Tag size={18} className="text-gray-400" />
+          <Tag size={18} className={theme === 'dark' ? 'text-slate-400' : 'text-slate-500'} />
           <select
-            className="px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className={`px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+              theme === 'dark'
+                ? 'bg-slate-700 border-slate-600 text-white'
+                : 'bg-white border-slate-300 text-slate-900'
+            }`}
             value={tagFilter}
             onChange={e => setTagFilter(e.target.value)}
           >
@@ -183,7 +241,11 @@ const Leads = () => {
           </select>
         </div>
         <button
-          className="ml-auto px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200"
+          className={`ml-auto px-4 py-2 rounded-lg transition-colors border font-semibold ${
+            theme === 'dark'
+              ? 'bg-slate-700 text-slate-300 border-slate-600 hover:bg-slate-600'
+              : 'bg-slate-100 text-slate-700 border-slate-300 hover:bg-slate-200'
+          }`}
           onClick={() => { setStatusFilter(''); setOwnerFilter(''); setTagFilter(''); setSearchTerm(''); }}
         >
           Clear Filters
@@ -191,131 +253,243 @@ const Leads = () => {
       </div>
 
       {selectedLeads.length > 0 && (
-        <div className="flex items-center gap-4 bg-blue-50 border border-blue-200 rounded-xl px-6 py-3 mb-2">
-          <span className="font-semibold text-blue-700">{selectedLeads.length} selected</span>
-          <button className="text-blue-600 hover:underline">Bulk Email</button>
-          <button className="text-blue-600 hover:underline">Bulk Assign</button>
-          <button className="text-blue-600 hover:underline">Bulk Status</button>
-          <button className="text-red-600 hover:underline" onClick={clearAll}>Clear</button>
+        <div className={`flex items-center gap-4 px-6 py-3 mb-2 rounded-xl border ${
+          theme === 'dark'
+            ? 'bg-blue-900/20 border-blue-700'
+            : 'bg-blue-50 border-blue-200'
+        }`}>
+          <span className={`font-semibold ${theme === 'dark' ? 'text-blue-300' : 'text-blue-700'}`}>
+            {selectedLeads.length} selected
+          </span>
+          <button className={`hover:underline font-semibold ${theme === 'dark' ? 'text-blue-400' : 'text-blue-600'}`}>
+            Bulk Email
+          </button>
+          <button className={`hover:underline font-semibold ${theme === 'dark' ? 'text-blue-400' : 'text-blue-600'}`}>
+            Bulk Assign
+          </button>
+          <button className={`hover:underline font-semibold ${theme === 'dark' ? 'text-blue-400' : 'text-blue-600'}`}>
+            Bulk Status
+          </button>
+          <button className={`hover:underline font-semibold ${theme === 'dark' ? 'text-red-400' : 'text-red-600'}`} onClick={clearAll}>
+            Clear
+          </button>
         </div>
       )}
 
-      <div className="overflow-x-auto bg-white rounded-xl border border-gray-200 shadow-sm">
+      <div className={`overflow-x-auto rounded-xl border ${
+        theme === 'dark' 
+          ? 'bg-slate-800 border-slate-700' 
+          : 'bg-white border-slate-200'
+      }`}>
         <table className="w-full min-w-[1200px]">
-          <thead className="bg-gray-50 sticky top-0 z-10">
+          <thead className={`sticky top-0 z-10 ${
+            theme === 'dark' ? 'bg-slate-700' : 'bg-slate-50'
+          }`}>
             <tr>
-              <th className="p-3 text-left"><input type="checkbox" checked={selectedLeads.length === filteredLeads.length && filteredLeads.length > 0} onChange={e => e.target.checked ? selectAll() : clearAll()} /></th>
-              <th className="p-3 text-left">Name</th>
-              <th className="p-3 text-left">Company</th>
-              <th className="p-3 text-left">Status</th>
-              <th className="p-3 text-left">Value</th>
-              <th className="p-3 text-left">Source</th>
-              <th className="p-3 text-left">Owner</th>
-              <th className="p-3 text-left">Next Action</th>
-              <th className="p-3 text-left">Last Activity</th>
-              <th className="p-3 text-left">Tags</th>
-              <th className="p-3 text-left">Last Contact</th>
-              <th className="p-3 text-left">Actions</th>
+              <th className="p-3 text-left">
+                <input 
+                  type="checkbox" 
+                  checked={selectedLeads.length === filteredLeads.length && filteredLeads.length > 0} 
+                  onChange={e => e.target.checked ? selectAll() : clearAll()} 
+                  className="rounded border-slate-300"
+                />
+              </th>
+              <th className={`p-3 text-left font-bold ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>Name</th>
+              <th className={`p-3 text-left font-bold ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>Company</th>
+              <th className={`p-3 text-left font-bold ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>Status</th>
+              <th className={`p-3 text-left font-bold ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>Value</th>
+              <th className={`p-3 text-left font-bold ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>Source</th>
+              <th className={`p-3 text-left font-bold ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>Owner</th>
+              <th className={`p-3 text-left font-bold ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>Next Action</th>
+              <th className={`p-3 text-left font-bold ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>Last Activity</th>
+              <th className={`p-3 text-left font-bold ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>Tags</th>
+              <th className={`p-3 text-left font-bold ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>Last Contact</th>
+              <th className={`p-3 text-left font-bold ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>Actions</th>
             </tr>
           </thead>
           <tbody>
             {filteredLeads.map(lead => (
-              <tr key={lead.id} className="border-b border-gray-100 hover:bg-blue-50 transition-all">
-                <td className="p-3"><input type="checkbox" checked={selectedLeads.includes(lead.id)} onChange={() => toggleSelectLead(lead.id)} /></td>
-                <td className="p-3 font-semibold text-blue-900 cursor-pointer" onClick={() => openDrawer(lead)}>{lead.name}</td>
-                <td className="p-3">{lead.company}</td>
-                <td className="p-3"><span className={`px-2 py-1 rounded-full text-xs font-semibold ${getStatusColor(lead.status)}`}>{lead.status}</span></td>
-                <td className="p-3">${lead.value.toLocaleString()}</td>
-                <td className="p-3">{lead.source}</td>
-                <td className="p-3">{lead.owner}</td>
-                <td className="p-3">{lead.nextAction}</td>
-                <td className="p-3">{lead.lastActivity}</td>
+              <tr key={lead.id} className={`border-b transition-all ${
+                theme === 'dark' 
+                  ? 'border-slate-700 hover:bg-slate-700/50' 
+                  : 'border-slate-100 hover:bg-blue-50'
+              }`}>
+                <td className="p-3">
+                  <input 
+                    type="checkbox" 
+                    checked={selectedLeads.includes(lead.id)} 
+                    onChange={() => toggleSelectLead(lead.id)} 
+                    className="rounded border-slate-300"
+                  />
+                </td>
+                <td className={`p-3 font-bold cursor-pointer ${
+                  theme === 'dark' ? 'text-blue-400' : 'text-blue-900'
+                }`} onClick={() => openDrawer(lead)}>
+                  {lead.name}
+                </td>
+                <td className={`p-3 font-semibold ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>
+                  {lead.company}
+                </td>
+                <td className="p-3">
+                  <span className={`px-2 py-1 rounded-full text-xs font-bold border ${getStatusColor(lead.status)}`}>
+                    {lead.status}
+                  </span>
+                </td>
+                <td className={`p-3 font-semibold ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>
+                  ${lead.value.toLocaleString()}
+                </td>
+                <td className={`p-3 ${theme === 'dark' ? 'text-slate-300' : 'text-slate-700'}`}>
+                  {lead.source}
+                </td>
+                <td className={`p-3 ${theme === 'dark' ? 'text-slate-300' : 'text-slate-700'}`}>
+                  {lead.owner}
+                </td>
+                <td className={`p-3 ${theme === 'dark' ? 'text-slate-300' : 'text-slate-700'}`}>
+                  {lead.nextAction}
+                </td>
+                <td className={`p-3 ${theme === 'dark' ? 'text-slate-300' : 'text-slate-700'}`}>
+                  {lead.lastActivity}
+                </td>
                 <td className="p-3">
                   <div className="flex flex-wrap gap-1">
                     {lead.tags.map((tag, idx) => {
                       const tagObj = mockTags.find(t => t.label === tag);
                       return (
-                        <span key={idx} className={`px-2 py-1 rounded-full text-xs font-semibold ${tagObj ? tagObj.color : 'bg-gray-100 text-gray-700'}`}>{tag}</span>
+                        <span key={idx} className={`px-2 py-1 rounded-full text-xs font-bold border ${tagObj ? tagObj.color : 'bg-gray-100 text-gray-700 border-gray-300'}`}>
+                          {tag}
+                        </span>
                       );
                     })}
                   </div>
                 </td>
-                <td className="p-3">{lead.lastContact}</td>
+                <td className={`p-3 ${theme === 'dark' ? 'text-slate-300' : 'text-slate-700'}`}>
+                  {lead.lastContact}
+                </td>
                 <td className="p-3 flex gap-2">
-                  <button className="text-blue-600 hover:text-blue-800" title="View" onClick={() => openDrawer(lead)}><Eye size={16} /></button>
-                  <button className="text-green-600 hover:text-green-800" title="Call"><Phone size={16} /></button>
-                  <button className="text-indigo-600 hover:text-indigo-800" title="Email"><Mail size={16} /></button>
-                  <button className="text-yellow-600 hover:text-yellow-800" title="Edit"><Edit size={16} /></button>
-                  <button className="text-red-600 hover:text-red-800" title="Delete" onClick={() => setLeads(leads.filter(l => l.id !== lead.id))}><Trash2 size={16} /></button>
+                  <button className="text-blue-600 hover:text-blue-800 p-1 rounded border border-blue-200 hover:bg-blue-50" title="View" onClick={() => openDrawer(lead)}>
+                    <Eye size={16} />
+                  </button>
+                  <button className="text-green-600 hover:text-green-800 p-1 rounded border border-green-200 hover:bg-green-50" title="Call">
+                    <Phone size={16} />
+                  </button>
+                  <button className="text-indigo-600 hover:text-indigo-800 p-1 rounded border border-indigo-200 hover:bg-indigo-50" title="Email">
+                    <Mail size={16} />
+                  </button>
+                  <button className="text-yellow-600 hover:text-yellow-800 p-1 rounded border border-yellow-200 hover:bg-yellow-50" title="Edit">
+                    <Edit size={16} />
+                  </button>
+                  <button className="text-red-600 hover:text-red-800 p-1 rounded border border-red-200 hover:bg-red-50" title="Delete" onClick={() => setLeads(leads.filter(l => l.id !== lead.id))}>
+                    <Trash2 size={16} />
+                  </button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
         {filteredLeads.length === 0 && (
-          <div className="text-center text-gray-500 py-12">No leads found.</div>
+          <div className={`text-center py-12 ${theme === 'dark' ? 'text-slate-400' : 'text-slate-500'}`}>
+            No leads found.
+          </div>
         )}
       </div>
 
       {showDrawer && drawerLead && (
         <div className="fixed inset-0 z-50 flex">
           <div className="bg-black/30 w-full h-full" onClick={closeDrawer}></div>
-          <div className="w-full max-w-lg bg-white h-full shadow-2xl p-8 overflow-y-auto">
+          <div className={`w-full max-w-lg h-full shadow-2xl p-8 overflow-y-auto border-l ${
+            theme === 'dark' 
+              ? 'bg-slate-800 border-slate-700' 
+              : 'bg-white border-slate-200'
+          }`}>
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-2xl font-bold text-gray-900">Lead Details</h3>
-              <button onClick={closeDrawer} className="text-gray-400 hover:text-gray-600"><MoreVertical size={20} /></button>
+              <h3 className={`text-2xl font-bold ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>
+                Lead Details
+              </h3>
+              <button onClick={closeDrawer} className={`hover:text-slate-600 ${theme === 'dark' ? 'text-slate-400' : 'text-slate-400'}`}>
+                <MoreVertical size={20} />
+              </button>
             </div>
             <div className="space-y-4">
               <div>
-                <div className="text-sm text-gray-500">Name</div>
-                <div className="font-semibold text-lg text-blue-900">{drawerLead.name}</div>
+                <div className={`text-sm ${theme === 'dark' ? 'text-slate-400' : 'text-slate-500'}`}>Name</div>
+                <div className={`font-bold text-lg ${theme === 'dark' ? 'text-blue-400' : 'text-blue-900'}`}>
+                  {drawerLead.name}
+                </div>
               </div>
               <div>
-                <div className="text-sm text-gray-500">Company</div>
-                <div className="font-medium">{drawerLead.company}</div>
+                <div className={`text-sm ${theme === 'dark' ? 'text-slate-400' : 'text-slate-500'}`}>Company</div>
+                <div className={`font-semibold ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>
+                  {drawerLead.company}
+                </div>
               </div>
               <div>
-                <div className="text-sm text-gray-500">Email</div>
-                <div className="font-medium">{drawerLead.email}</div>
+                <div className={`text-sm ${theme === 'dark' ? 'text-slate-400' : 'text-slate-500'}`}>Email</div>
+                <div className={`font-semibold ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>
+                  {drawerLead.email}
+                </div>
               </div>
               <div>
-                <div className="text-sm text-gray-500">Phone</div>
-                <div className="font-medium">{drawerLead.phone}</div>
+                <div className={`text-sm ${theme === 'dark' ? 'text-slate-400' : 'text-slate-500'}`}>Phone</div>
+                <div className={`font-semibold ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>
+                  {drawerLead.phone}
+                </div>
               </div>
               <div>
-                <div className="text-sm text-gray-500">Status</div>
-                <span className={`px-2 py-1 rounded-full text-xs font-semibold ${getStatusColor(drawerLead.status)}`}>{drawerLead.status}</span>
+                <div className={`text-sm ${theme === 'dark' ? 'text-slate-400' : 'text-slate-500'}`}>Status</div>
+                <span className={`px-2 py-1 rounded-full text-xs font-bold border ${getStatusColor(drawerLead.status)}`}>
+                  {drawerLead.status}
+                </span>
               </div>
               <div>
-                <div className="text-sm text-gray-500">Owner</div>
-                <div className="font-medium">{drawerLead.owner}</div>
+                <div className={`text-sm ${theme === 'dark' ? 'text-slate-400' : 'text-slate-500'}`}>Owner</div>
+                <div className={`font-semibold ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>
+                  {drawerLead.owner}
+                </div>
               </div>
               <div>
-                <div className="text-sm text-gray-500">Next Action</div>
-                <div className="font-medium">{drawerLead.nextAction}</div>
+                <div className={`text-sm ${theme === 'dark' ? 'text-slate-400' : 'text-slate-500'}`}>Next Action</div>
+                <div className={`font-semibold ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>
+                  {drawerLead.nextAction}
+                </div>
               </div>
               <div>
-                <div className="text-sm text-gray-500">Last Activity</div>
-                <div className="font-medium">{drawerLead.lastActivity}</div>
+                <div className={`text-sm ${theme === 'dark' ? 'text-slate-400' : 'text-slate-500'}`}>Last Activity</div>
+                <div className={`font-semibold ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>
+                  {drawerLead.lastActivity}
+                </div>
               </div>
               <div>
-                <div className="text-sm text-gray-500">Tags</div>
+                <div className={`text-sm ${theme === 'dark' ? 'text-slate-400' : 'text-slate-500'}`}>Tags</div>
                 <div className="flex flex-wrap gap-1 mt-1">
                   {drawerLead.tags.map((tag, idx) => {
                     const tagObj = mockTags.find(t => t.label === tag);
                     return (
-                      <span key={idx} className={`px-2 py-1 rounded-full text-xs font-semibold ${tagObj ? tagObj.color : 'bg-gray-100 text-gray-700'}`}>{tag}</span>
+                      <span key={idx} className={`px-2 py-1 rounded-full text-xs font-bold border ${tagObj ? tagObj.color : 'bg-gray-100 text-gray-700 border-gray-300'}`}>
+                        {tag}
+                      </span>
                     );
                   })}
                 </div>
               </div>
               <div>
-                <div className="text-sm text-gray-500">Notes</div>
-                <div className="bg-gray-50 p-3 rounded-lg text-gray-700 mt-1">{drawerLead.notes}</div>
+                <div className={`text-sm ${theme === 'dark' ? 'text-slate-400' : 'text-slate-500'}`}>Notes</div>
+                <div className={`p-3 rounded-lg mt-1 border ${
+                  theme === 'dark' 
+                    ? 'bg-slate-700 text-slate-300 border-slate-600' 
+                    : 'bg-slate-50 text-slate-700 border-slate-200'
+                }`}>
+                  {drawerLead.notes}
+                </div>
               </div>
             </div>
             <div className="flex justify-end mt-8">
-              <button onClick={closeDrawer} className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">Close</button>
+              <button onClick={closeDrawer} className={`px-4 py-2 border rounded-lg transition-colors font-semibold ${
+                theme === 'dark'
+                  ? 'border-slate-600 hover:bg-slate-700 text-white'
+                  : 'border-slate-300 hover:bg-slate-50 text-slate-900'
+              }`}>
+                Close
+              </button>
             </div>
           </div>
         </div>

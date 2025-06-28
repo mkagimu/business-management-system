@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
-type Theme = 'light' | 'dark' | 'glass';
+type Theme = 'light' | 'dark';
 
 interface ThemeContextType {
   theme: Theme;
@@ -21,31 +21,28 @@ export const useTheme = () => {
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [theme, setTheme] = useState<Theme>(() => {
     const saved = localStorage.getItem('theme');
-    return (saved as Theme) || 'glass';
+    return (saved as Theme) || 'light';
   });
 
   useEffect(() => {
     localStorage.setItem('theme', theme);
     
     // Apply theme classes to document
-    document.documentElement.classList.remove('light', 'dark', 'glass');
+    document.documentElement.classList.remove('light', 'dark');
     document.documentElement.classList.add(theme);
     
     // Apply theme-specific styles
-    if (theme === 'glass') {
-      document.body.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
-    } else if (theme === 'dark') {
-      document.body.style.background = 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)';
+    if (theme === 'dark') {
+      document.body.style.background = '#0f172a';
+      document.body.style.color = '#f8fafc';
     } else {
-      document.body.style.background = 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)';
+      document.body.style.background = '#f8fafc';
+      document.body.style.color = '#0f172a';
     }
   }, [theme]);
 
   const toggleTheme = () => {
-    const themes: Theme[] = ['light', 'dark', 'glass'];
-    const currentIndex = themes.indexOf(theme);
-    const nextIndex = (currentIndex + 1) % themes.length;
-    setTheme(themes[nextIndex]);
+    setTheme(theme === 'light' ? 'dark' : 'light');
   };
 
   return (
