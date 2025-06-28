@@ -1,24 +1,14 @@
 import React, { useState } from 'react';
-import { Bell, Search, Mail, Sun, Moon, Settings, User, LogOut } from 'lucide-react';
-import { useTheme } from '../../contexts/ThemeContext';
+import { Bell, Search, Mail, Settings, User, LogOut } from 'lucide-react';
 import { useTenant } from '../../contexts/TenantContext';
 
 const Header = () => {
-  const { theme, toggleTheme } = useTheme();
   const { currentTenant, tenants, switchTenant } = useTenant();
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showTenantMenu, setShowTenantMenu] = useState(false);
 
-  const getThemeIcon = () => {
-    return theme === 'light' ? <Moon size={20} /> : <Sun size={20} />;
-  };
-
   return (
-    <header className={`border-b px-6 py-4 ${
-      theme === 'dark' 
-        ? 'bg-slate-800 border-slate-700 text-white' 
-        : 'bg-white border-slate-200 text-slate-900'
-    }`}>
+    <header className="bg-white border-b border-slate-300 px-6 py-4 shadow-sm">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-4">
           <div className="relative">
@@ -26,11 +16,7 @@ const Header = () => {
             <input
               type="text"
               placeholder="Search anything..."
-              className={`pl-10 pr-4 py-2 rounded-lg border focus:ring-2 focus:ring-blue-500 focus:border-transparent w-80 transition-all ${
-                theme === 'dark'
-                  ? 'bg-slate-700 border-slate-600 text-white placeholder-slate-400'
-                  : 'bg-slate-50 border-slate-300 text-slate-900 placeholder-slate-500'
-              }`}
+              className="pl-10 pr-4 py-2 rounded-lg border-2 border-slate-300 bg-white text-slate-900 placeholder-slate-500 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-80 transition-all font-medium"
             />
           </div>
         </div>
@@ -40,26 +26,16 @@ const Header = () => {
           <div className="relative">
             <button
               onClick={() => setShowTenantMenu(!showTenantMenu)}
-              className={`flex items-center space-x-2 px-3 py-2 rounded-lg border transition-all ${
-                theme === 'dark'
-                  ? 'hover:bg-slate-700 border-slate-600'
-                  : 'hover:bg-slate-100 border-slate-300'
-              }`}
+              className="flex items-center space-x-2 px-3 py-2 rounded-lg border-2 border-slate-300 bg-white hover:bg-slate-50 hover:border-slate-400 transition-all"
             >
-              <div className="w-6 h-6 rounded-full bg-gradient-to-r from-blue-500 to-purple-500"></div>
-              <span className="text-sm font-semibold">{currentTenant?.name}</span>
+              <div className="w-6 h-6 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 border border-slate-300"></div>
+              <span className="text-sm font-bold text-slate-900">{currentTenant?.name}</span>
             </button>
             
             {showTenantMenu && (
-              <div className={`absolute right-0 mt-2 w-64 rounded-lg shadow-lg border z-50 ${
-                theme === 'dark'
-                  ? 'bg-slate-800 border-slate-700'
-                  : 'bg-white border-slate-200'
-              }`}>
+              <div className="absolute right-0 mt-2 w-64 rounded-lg shadow-lg border-2 border-slate-300 bg-white z-50">
                 <div className="p-4">
-                  <h3 className={`text-sm font-semibold mb-3 ${
-                    theme === 'dark' ? 'text-white' : 'text-slate-900'
-                  }`}>
+                  <h3 className="text-sm font-bold mb-3 text-slate-900">
                     Switch Organization
                   </h3>
                   <div className="space-y-2">
@@ -70,29 +46,21 @@ const Header = () => {
                           switchTenant(tenant.id);
                           setShowTenantMenu(false);
                         }}
-                        className={`w-full flex items-center space-x-3 p-2 rounded-lg transition-colors ${
+                        className={`w-full flex items-center space-x-3 p-2 rounded-lg border transition-colors ${
                           currentTenant?.id === tenant.id
-                            ? theme === 'dark'
-                              ? 'bg-slate-700 border border-slate-600'
-                              : 'bg-blue-50 border border-blue-200'
-                            : theme === 'dark'
-                            ? 'hover:bg-slate-700'
-                            : 'hover:bg-slate-50'
+                            ? 'bg-blue-50 border-blue-300'
+                            : 'hover:bg-slate-50 border-slate-200'
                         }`}
                       >
                         <div 
-                          className="w-4 h-4 rounded-full"
+                          className="w-4 h-4 rounded-full border border-slate-300"
                           style={{ backgroundColor: tenant.primaryColor }}
                         ></div>
                         <div className="text-left">
-                          <div className={`text-sm font-semibold ${
-                            theme === 'dark' ? 'text-white' : 'text-slate-900'
-                          }`}>
+                          <div className="text-sm font-bold text-slate-900">
                             {tenant.name}
                           </div>
-                          <div className={`text-xs ${
-                            theme === 'dark' ? 'text-slate-400' : 'text-slate-500'
-                          }`}>
+                          <div className="text-xs text-slate-600">
                             {tenant.domain}
                           </div>
                         </div>
@@ -105,96 +73,52 @@ const Header = () => {
           </div>
 
           {/* Notifications */}
-          <button className={`relative p-2 rounded-lg transition-all ${
-            theme === 'dark'
-              ? 'hover:bg-slate-700 text-slate-300'
-              : 'hover:bg-slate-100 text-slate-600'
-          }`}>
+          <button className="relative p-2 rounded-lg border-2 border-slate-300 bg-white hover:bg-slate-50 hover:border-slate-400 text-slate-600 transition-all">
             <Mail size={20} />
-            <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-bold">3</span>
+            <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-bold border border-white">3</span>
           </button>
           
-          <button className={`relative p-2 rounded-lg transition-all ${
-            theme === 'dark'
-              ? 'hover:bg-slate-700 text-slate-300'
-              : 'hover:bg-slate-100 text-slate-600'
-          }`}>
+          <button className="relative p-2 rounded-lg border-2 border-slate-300 bg-white hover:bg-slate-50 hover:border-slate-400 text-slate-600 transition-all">
             <Bell size={20} />
-            <span className="absolute -top-1 -right-1 w-5 h-5 bg-blue-500 text-white text-xs rounded-full flex items-center justify-center font-bold">5</span>
+            <span className="absolute -top-1 -right-1 w-5 h-5 bg-blue-500 text-white text-xs rounded-full flex items-center justify-center font-bold border border-white">5</span>
           </button>
 
-          {/* Theme Toggle */}
-          <button 
-            onClick={toggleTheme}
-            className={`p-2 rounded-lg transition-all ${
-              theme === 'dark'
-                ? 'hover:bg-slate-700 text-yellow-400'
-                : 'hover:bg-slate-100 text-slate-600'
-            }`}
-          >
-            {getThemeIcon()}
-          </button>
-
-          <div className={`w-px h-6 ${theme === 'dark' ? 'bg-slate-600' : 'bg-slate-300'}`}></div>
+          <div className="w-px h-6 bg-slate-300"></div>
 
           {/* User Menu */}
           <div className="relative">
             <button
               onClick={() => setShowUserMenu(!showUserMenu)}
-              className={`flex items-center space-x-3 px-3 py-2 rounded-lg border transition-all ${
-                theme === 'dark'
-                  ? 'bg-slate-700 border-slate-600 hover:bg-slate-600'
-                  : 'bg-white border-slate-300 hover:bg-slate-50'
-              }`}
+              className="flex items-center space-x-3 px-3 py-2 rounded-lg border-2 border-slate-300 bg-white hover:bg-slate-50 hover:border-slate-400 transition-all"
             >
-              <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full flex items-center justify-center">
+              <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full flex items-center justify-center border border-slate-300">
                 <span className="text-white text-sm font-bold">JD</span>
               </div>
               <div>
-                <p className={`text-sm font-semibold ${
-                  theme === 'dark' ? 'text-white' : 'text-slate-900'
-                }`}>
+                <p className="text-sm font-bold text-slate-900">
                   John Doe
                 </p>
-                <p className={`text-xs ${
-                  theme === 'dark' ? 'text-slate-400' : 'text-slate-500'
-                }`}>
+                <p className="text-xs text-slate-600">
                   Administrator
                 </p>
               </div>
             </button>
 
             {showUserMenu && (
-              <div className={`absolute right-0 mt-2 w-48 rounded-lg shadow-lg border z-50 ${
-                theme === 'dark'
-                  ? 'bg-slate-800 border-slate-700'
-                  : 'bg-white border-slate-200'
-              }`}>
+              <div className="absolute right-0 mt-2 w-48 rounded-lg shadow-lg border-2 border-slate-300 bg-white z-50">
                 <div className="p-2">
-                  <button className={`w-full flex items-center space-x-2 px-3 py-2 rounded-lg transition-colors ${
-                    theme === 'dark'
-                      ? 'hover:bg-slate-700 text-white'
-                      : 'hover:bg-slate-50 text-slate-700'
-                  }`}>
+                  <button className="w-full flex items-center space-x-2 px-3 py-2 rounded-lg border border-transparent hover:bg-slate-50 hover:border-slate-200 text-slate-700 transition-colors">
                     <User size={16} />
-                    <span>Profile</span>
+                    <span className="font-medium">Profile</span>
                   </button>
-                  <button className={`w-full flex items-center space-x-2 px-3 py-2 rounded-lg transition-colors ${
-                    theme === 'dark'
-                      ? 'hover:bg-slate-700 text-white'
-                      : 'hover:bg-slate-50 text-slate-700'
-                  }`}>
+                  <button className="w-full flex items-center space-x-2 px-3 py-2 rounded-lg border border-transparent hover:bg-slate-50 hover:border-slate-200 text-slate-700 transition-colors">
                     <Settings size={16} />
-                    <span>Settings</span>
+                    <span className="font-medium">Settings</span>
                   </button>
-                  <hr className={`my-2 ${theme === 'dark' ? 'border-slate-600' : 'border-slate-200'}`} />
-                  <button className={`w-full flex items-center space-x-2 px-3 py-2 rounded-lg transition-colors ${
-                    theme === 'dark'
-                      ? 'hover:bg-red-900/20 text-red-400'
-                      : 'hover:bg-red-50 text-red-600'
-                  }`}>
+                  <hr className="my-2 border-slate-200" />
+                  <button className="w-full flex items-center space-x-2 px-3 py-2 rounded-lg border border-transparent hover:bg-red-50 hover:border-red-200 text-red-600 transition-colors">
                     <LogOut size={16} />
-                    <span>Sign Out</span>
+                    <span className="font-medium">Sign Out</span>
                   </button>
                 </div>
               </div>

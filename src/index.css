@@ -14,6 +14,8 @@
   body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
     transition: background 0.3s ease;
+    background: #f8fafc;
+    color: #0f172a;
   }
 }
 
@@ -82,44 +84,18 @@
   }
 
   ::-webkit-scrollbar-track {
-    background: rgba(148, 163, 184, 0.1);
+    background: #e2e8f0;
     border-radius: 4px;
   }
 
   ::-webkit-scrollbar-thumb {
-    background: rgba(148, 163, 184, 0.3);
+    background: #94a3b8;
     border-radius: 4px;
     transition: background 0.3s ease;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: rgba(148, 163, 184, 0.5);
-  }
-  
-  /* Dark theme scrollbar */
-  .dark ::-webkit-scrollbar-track {
-    background: rgba(71, 85, 105, 0.2);
-  }
-  
-  .dark ::-webkit-scrollbar-thumb {
-    background: rgba(148, 163, 184, 0.2);
-  }
-  
-  .dark ::-webkit-scrollbar-thumb:hover {
-    background: rgba(148, 163, 184, 0.3);
-  }
-  
-  /* Light theme scrollbar */
-  .light ::-webkit-scrollbar-track {
-    background: #f1f5f9;
-  }
-  
-  .light ::-webkit-scrollbar-thumb {
-    background: #cbd5e1;
-  }
-  
-  .light ::-webkit-scrollbar-thumb:hover {
-    background: #94a3b8;
+    background: #64748b;
   }
 }
 
@@ -162,37 +138,7 @@
   -webkit-line-clamp: 3;
 }
 
-/* Enhanced contrast for better readability */
-.dark {
-  color-scheme: dark;
-}
-
-.light {
-  color-scheme: light;
-}
-
-/* Ensure proper contrast in all themes */
-.dark .text-slate-900 {
-  color: #f8fafc !important;
-}
-
-.dark .text-slate-800 {
-  color: #f1f5f9 !important;
-}
-
-.dark .text-slate-700 {
-  color: #e2e8f0 !important;
-}
-
-.dark .text-slate-600 {
-  color: #cbd5e1 !important;
-}
-
-.light .text-white {
-  color: #0f172a !important;
-}
-
-/* Enhanced borders and outlines */
+/* Enhanced borders and outlines for all components */
 .border {
   border-width: 1px;
 }
@@ -201,36 +147,142 @@
   border-width: 2px;
 }
 
-/* Better button styling */
+/* Better button styling with clear outlines */
 button {
   font-weight: 600;
+  border: 2px solid transparent;
 }
 
-/* Enhanced table styling */
+button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+button:focus {
+  outline: 2px solid #3B82F6;
+  outline-offset: 2px;
+}
+
+/* Enhanced table styling with clear borders */
 table {
   border-collapse: separate;
   border-spacing: 0;
 }
 
 th, td {
-  border-bottom: 1px solid;
+  border-bottom: 1px solid #e2e8f0;
 }
 
-.dark th,
-.dark td {
-  border-color: #475569;
+th {
+  background-color: #f1f5f9;
+  font-weight: 900;
 }
 
-.light th,
-.light td {
-  border-color: #e2e8f0;
-}
-
-/* Card styling improvements */
+/* Card styling improvements with clear outlines */
 .card {
+  border: 2px solid #e2e8f0;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 }
 
-.dark .card {
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+.card:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* Input field styling with clear borders */
+input, select, textarea {
+  border: 2px solid #d1d5db;
+  font-weight: 500;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: #3B82F6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Modal and drawer styling */
+.modal, .drawer {
+  border: 2px solid #e2e8f0;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Calendar and schedule specific styling */
+.calendar-day {
+  border: 1px solid #e2e8f0;
+}
+
+.calendar-day:hover {
+  border-color: #3B82F6;
+  background-color: #eff6ff;
+}
+
+/* Ensure all interactive elements have visible borders */
+.interactive {
+  border: 2px solid #d1d5db;
+}
+
+.interactive:hover {
+  border-color: #9ca3af;
+}
+
+.interactive:focus {
+  border-color: #3B82F6;
+  outline: 2px solid #3B82F6;
+  outline-offset: 2px;
+}
+
+/* Status badges with clear borders */
+.status-badge {
+  border: 2px solid;
+  font-weight: 900;
+}
+
+/* Dropdown and select styling */
+.dropdown {
+  border: 2px solid #d1d5db;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* Ensure proper contrast for all text */
+.text-primary {
+  color: #0f172a;
+  font-weight: 700;
+}
+
+.text-secondary {
+  color: #475569;
+  font-weight: 600;
+}
+
+.text-muted {
+  color: #64748b;
+  font-weight: 500;
+}
+
+/* Bold text for better readability */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 900;
+  color: #0f172a;
+}
+
+p {
+  font-weight: 500;
+}
+
+/* Enhanced sidebar styling (keep dark) */
+.sidebar {
+  background: #1e293b;
+  border-right: 2px solid #334155;
+}
+
+.sidebar-item {
+  border: 2px solid #334155;
+}
+
+.sidebar-item:hover {
+  border-color: #475569;
+}
+
+.sidebar-item.active {
+  border-color: transparent;
 }
