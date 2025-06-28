@@ -121,29 +121,29 @@ const Calendar = () => {
   const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 p-6 bg-slate-50 min-h-screen">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-teal-600 to-cyan-600 bg-clip-text text-transparent">
+          <h1 className="text-3xl font-black text-slate-900">
             Calendar
           </h1>
-          <p className="text-gray-600 mt-1">Manage your schedule and upcoming events</p>
+          <p className="text-slate-700 mt-1 font-medium">Manage your schedule and upcoming events</p>
         </div>
         <div className="flex items-center space-x-3">
-          <button className="bg-gradient-to-r from-teal-600 to-cyan-600 text-white px-4 py-2 rounded-xl hover:from-teal-700 hover:to-cyan-700 transition-all flex items-center space-x-2 shadow-lg">
+          <button className="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-all flex items-center space-x-2 border-2 border-teal-600 font-bold shadow-lg">
             <Plus size={20} />
             <span>New Event</span>
           </button>
-          <div className="flex items-center bg-white/20 backdrop-blur-md rounded-xl p-1 border border-white/30">
+          <div className="flex items-center bg-white rounded-lg p-1 border-2 border-slate-300">
             {['month', 'week', 'day'].map((viewType) => (
               <button
                 key={viewType}
                 onClick={() => setView(viewType as any)}
-                className={`px-3 py-1 rounded-lg text-sm font-medium transition-all ${
+                className={`px-3 py-1 rounded-md text-sm font-bold transition-all border ${
                   view === viewType 
-                    ? 'bg-white/30 text-gray-900 shadow-sm' 
-                    : 'text-gray-600 hover:text-gray-900'
+                    ? 'bg-slate-100 text-slate-900 border-slate-400' 
+                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50 border-transparent'
                 }`}
               >
                 {viewType.charAt(0).toUpperCase() + viewType.slice(1)}
@@ -156,29 +156,29 @@ const Calendar = () => {
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         {/* Calendar */}
         <div className="lg:col-span-3">
-          <div className="bg-white/20 backdrop-blur-md rounded-2xl border border-white/30 shadow-xl overflow-hidden">
+          <div className="bg-white rounded-lg border-2 border-slate-300 shadow-lg overflow-hidden">
             {/* Calendar Header */}
-            <div className="p-6 border-b border-white/20">
+            <div className="p-6 border-b border-slate-200">
               <div className="flex items-center justify-between">
-                <h2 className="text-2xl font-bold text-gray-900">
+                <h2 className="text-2xl font-black text-slate-900">
                   {monthNames[currentDate.getMonth()]} {currentDate.getFullYear()}
                 </h2>
                 <div className="flex items-center space-x-2">
                   <button
                     onClick={() => navigateMonth('prev')}
-                    className="p-2 hover:bg-white/20 rounded-lg transition-colors"
+                    className="p-2 hover:bg-slate-100 rounded-lg transition-colors border border-slate-300"
                   >
                     <ChevronLeft size={20} />
                   </button>
                   <button
                     onClick={() => setCurrentDate(new Date())}
-                    className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors text-sm"
+                    className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors text-sm font-bold border-2 border-teal-600"
                   >
                     Today
                   </button>
                   <button
                     onClick={() => navigateMonth('next')}
-                    className="p-2 hover:bg-white/20 rounded-lg transition-colors"
+                    className="p-2 hover:bg-slate-100 rounded-lg transition-colors border border-slate-300"
                   >
                     <ChevronRight size={20} />
                   </button>
@@ -191,7 +191,7 @@ const Calendar = () => {
               {/* Day Headers */}
               <div className="grid grid-cols-7 gap-1 mb-4">
                 {dayNames.map(day => (
-                  <div key={day} className="p-3 text-center font-medium text-gray-600 text-sm">
+                  <div key={day} className="p-3 text-center font-black text-slate-700 text-sm border border-slate-200 bg-slate-100">
                     {day}
                   </div>
                 ))}
@@ -201,7 +201,7 @@ const Calendar = () => {
               <div className="grid grid-cols-7 gap-1">
                 {days.map((day, index) => {
                   if (!day) {
-                    return <div key={index} className="p-3 h-24"></div>;
+                    return <div key={index} className="p-3 h-24 border border-slate-200"></div>;
                   }
 
                   const events = getEventsForDate(day);
@@ -212,12 +212,12 @@ const Calendar = () => {
                     <div
                       key={index}
                       onClick={() => setSelectedDate(day)}
-                      className={`p-2 h-24 border border-white/20 rounded-lg cursor-pointer transition-all hover:bg-white/20 ${
-                        isToday ? 'bg-teal-100 border-teal-300' : ''
-                      } ${isSelected ? 'bg-blue-100 border-blue-300' : ''}`}
+                      className={`p-2 h-24 border border-slate-200 rounded cursor-pointer transition-all hover:bg-slate-50 hover:border-slate-400 ${
+                        isToday ? 'bg-teal-100 border-teal-400' : ''
+                      } ${isSelected ? 'bg-blue-100 border-blue-400' : ''}`}
                     >
-                      <div className={`text-sm font-medium mb-1 ${
-                        isToday ? 'text-teal-700' : 'text-gray-900'
+                      <div className={`text-sm font-black mb-1 ${
+                        isToday ? 'text-teal-700' : 'text-slate-900'
                       }`}>
                         {day.getDate()}
                       </div>
@@ -225,13 +225,13 @@ const Calendar = () => {
                         {events.slice(0, 2).map(event => (
                           <div
                             key={event.id}
-                            className={`text-xs px-2 py-1 rounded text-white truncate ${getEventTypeColor(event.type)}`}
+                            className={`text-xs px-2 py-1 rounded text-white truncate border border-white ${getEventTypeColor(event.type)}`}
                           >
                             {event.title}
                           </div>
                         ))}
                         {events.length > 2 && (
-                          <div className="text-xs text-gray-500">
+                          <div className="text-xs text-slate-500 font-medium">
                             +{events.length - 2} more
                           </div>
                         )}
@@ -247,48 +247,48 @@ const Calendar = () => {
         {/* Sidebar */}
         <div className="space-y-6">
           {/* Today's Events */}
-          <div className="bg-white/20 backdrop-blur-md rounded-2xl border border-white/30 shadow-xl p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Today's Events</h3>
+          <div className="bg-white rounded-lg border-2 border-slate-300 shadow-lg p-6">
+            <h3 className="text-lg font-black text-slate-900 mb-4">Today's Events</h3>
             <div className="space-y-3">
               {getEventsForDate(new Date()).map(event => (
-                <div key={event.id} className="p-3 bg-white/30 rounded-lg">
+                <div key={event.id} className="p-3 bg-slate-50 rounded-lg border border-slate-200">
                   <div className="flex items-center justify-between mb-2">
-                    <h4 className="font-medium text-gray-900">{event.title}</h4>
-                    <span className={`w-3 h-3 rounded-full ${getEventTypeColor(event.type)}`}></span>
+                    <h4 className="font-bold text-slate-900">{event.title}</h4>
+                    <span className={`w-3 h-3 rounded-full border border-white ${getEventTypeColor(event.type)}`}></span>
                   </div>
-                  <div className="space-y-1 text-sm text-gray-600">
+                  <div className="space-y-1 text-sm text-slate-600">
                     <div className="flex items-center space-x-2">
                       <Clock size={14} />
-                      <span>{event.time} ({event.duration})</span>
+                      <span className="font-medium">{event.time} ({event.duration})</span>
                     </div>
                     <div className="flex items-center space-x-2">
                       {event.isVirtual ? <Video size={14} /> : <MapPin size={14} />}
-                      <span>{event.location}</span>
+                      <span className="font-medium">{event.location}</span>
                     </div>
                     <div className="flex items-center space-x-2">
                       <Users size={14} />
-                      <span>{event.attendees.length} attendees</span>
+                      <span className="font-medium">{event.attendees.length} attendees</span>
                     </div>
                   </div>
                 </div>
               ))}
               {getEventsForDate(new Date()).length === 0 && (
-                <p className="text-gray-500 text-sm">No events scheduled for today</p>
+                <p className="text-slate-500 text-sm font-medium">No events scheduled for today</p>
               )}
             </div>
           </div>
 
           {/* Upcoming Events */}
-          <div className="bg-white/20 backdrop-blur-md rounded-2xl border border-white/30 shadow-xl p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Upcoming Events</h3>
+          <div className="bg-white rounded-lg border-2 border-slate-300 shadow-lg p-6">
+            <h3 className="text-lg font-black text-slate-900 mb-4">Upcoming Events</h3>
             <div className="space-y-3">
               {mockEvents.slice(0, 3).map(event => (
-                <div key={event.id} className="p-3 bg-white/30 rounded-lg">
+                <div key={event.id} className="p-3 bg-slate-50 rounded-lg border border-slate-200">
                   <div className="flex items-center justify-between mb-2">
-                    <h4 className="font-medium text-gray-900">{event.title}</h4>
-                    <span className={`w-3 h-3 rounded-full ${getEventTypeColor(event.type)}`}></span>
+                    <h4 className="font-bold text-slate-900">{event.title}</h4>
+                    <span className={`w-3 h-3 rounded-full border border-white ${getEventTypeColor(event.type)}`}></span>
                   </div>
-                  <div className="text-sm text-gray-600">
+                  <div className="text-sm text-slate-600 font-medium">
                     {new Date(event.date).toLocaleDateString()} at {event.time}
                   </div>
                 </div>
@@ -297,16 +297,16 @@ const Calendar = () => {
           </div>
 
           {/* Quick Actions */}
-          <div className="bg-white/20 backdrop-blur-md rounded-2xl border border-white/30 shadow-xl p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
+          <div className="bg-white rounded-lg border-2 border-slate-300 shadow-lg p-6">
+            <h3 className="text-lg font-black text-slate-900 mb-4">Quick Actions</h3>
             <div className="space-y-2">
-              <button className="w-full p-3 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors text-sm font-medium">
+              <button className="w-full p-3 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors text-sm font-bold border-2 border-teal-600">
                 Schedule Meeting
               </button>
-              <button className="w-full p-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium">
+              <button className="w-full p-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-bold border-2 border-blue-600">
                 Block Time
               </button>
-              <button className="w-full p-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm font-medium">
+              <button className="w-full p-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm font-bold border-2 border-purple-600">
                 Set Reminder
               </button>
             </div>

@@ -138,7 +138,7 @@
   -webkit-line-clamp: 3;
 }
 
-/* Enhanced borders and outlines for all components */
+/* Refined border and outline system */
 .border {
   border-width: 1px;
 }
@@ -147,10 +147,10 @@
   border-width: 2px;
 }
 
-/* Better button styling with clear outlines */
+/* Button styling with subtle outlines */
 button {
   font-weight: 600;
-  border: 2px solid transparent;
+  border: 1px solid transparent;
 }
 
 button:hover {
@@ -163,7 +163,7 @@ button:focus {
   outline-offset: 2px;
 }
 
-/* Enhanced table styling with clear borders */
+/* Table styling with clean borders */
 table {
   border-collapse: separate;
   border-spacing: 0;
@@ -178,9 +178,9 @@ th {
   font-weight: 900;
 }
 
-/* Card styling improvements with clear outlines */
+/* Card styling with subtle outlines */
 .card {
-  border: 2px solid #e2e8f0;
+  border: 1px solid #e2e8f0;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 }
 
@@ -206,7 +206,7 @@ input:focus, select:focus, textarea:focus {
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
-/* Calendar and schedule specific styling */
+/* Calendar day cells with clear borders */
 .calendar-day {
   border: 1px solid #e2e8f0;
 }
@@ -216,34 +216,19 @@ input:focus, select:focus, textarea:focus {
   background-color: #eff6ff;
 }
 
-/* Ensure all interactive elements have visible borders */
-.interactive {
-  border: 2px solid #d1d5db;
-}
-
-.interactive:hover {
-  border-color: #9ca3af;
-}
-
-.interactive:focus {
-  border-color: #3B82F6;
-  outline: 2px solid #3B82F6;
-  outline-offset: 2px;
-}
-
 /* Status badges with clear borders */
 .status-badge {
-  border: 2px solid;
+  border: 1px solid;
   font-weight: 900;
 }
 
-/* Dropdown and select styling */
+/* Dropdown styling */
 .dropdown {
-  border: 2px solid #d1d5db;
+  border: 1px solid #d1d5db;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
-/* Ensure proper contrast for all text */
+/* Text styling for better readability */
 .text-primary {
   color: #0f172a;
   font-weight: 700;
@@ -285,4 +270,48 @@ p {
 
 .sidebar-item.active {
   border-color: transparent;
+}
+
+/* Tab button styling - consistent outlined buttons */
+.tab-button {
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  color: #64748b;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.tab-button:hover {
+  background: #f8fafc;
+  border-color: #94a3b8;
+  color: #475569;
+}
+
+.tab-button.active {
+  background: #f1f5f9;
+  border-color: #64748b;
+  color: #0f172a;
+  font-weight: 700;
+}
+
+/* Reduce visual clutter - lighter borders for secondary elements */
+.border-light {
+  border-color: #f1f5f9;
+}
+
+/* Ensure proper contrast for all interactive elements */
+.interactive {
+  border: 1px solid #d1d5db;
+}
+
+.interactive:hover {
+  border-color: #9ca3af;
+}
+
+.interactive:focus {
+  border-color: #3B82F6;
+  outline: 2px solid #3B82F6;
+  outline-offset: 2px;
 }
