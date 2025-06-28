@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Plus, Search, Filter, MoreVertical, Phone, Mail, DollarSign, Edit, Trash2, Eye, Users, Tag, ChevronDown, ChevronUp } from 'lucide-react';
 import { Lead } from '../../types';
 import { mockLeads, mockOwners, mockTags } from '../../data/mockData';
-import LeadWizardModal from './LeadWizardModal';
+import LeadModal from './LeadModal';
 
 const Leads = () => {
   const [leads, setLeads] = useState<Lead[]>(mockLeads);
@@ -11,9 +11,10 @@ const Leads = () => {
   const [ownerFilter, setOwnerFilter] = useState('');
   const [tagFilter, setTagFilter] = useState('');
   const [showAddModal, setShowAddModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
   const [selectedLeads, setSelectedLeads] = useState<string[]>([]);
-  const [showBulkBar, setShowBulkBar] = useState(false);
+  const [showBulkActions, setShowBulkActions] = useState(false);
   const [showDrawer, setShowDrawer] = useState(false);
   const [drawerLead, setDrawerLead] = useState<Lead | null>(null);
 
@@ -40,10 +41,95 @@ const Leads = () => {
   };
 
   const toggleSelectLead = (id: string) => {
-    setSelectedLeads(prev => prev.includes(id) ? prev.filter(lid => lid !== id) : [...prev, id]);
+    setSelectedLeads(prev => 
+      prev.includes(id) 
+        ? prev.filter(lid => lid !== id) 
+        : [...prev, id]
+    );
   };
-  const selectAll = () => setSelectedLeads(filteredLeads.map(l => l.id));
-  const clearAll = () => setSelectedLeads([]);
+
+  const selectAll = () => {
+    setSelectedLeads(filteredLeads.map(l => l.id));
+  };
+
+  const clearAll = () => {
+    setSelectedLeads([]);
+  };
+
+  const handleAddLead = (leadData: Partial<Lead>) => {
+    const newLead: Lead = {
+      id: Date.now().toString(),
+      name: leadData.name || '',
+      email: leadData.email || '',
+      phone: leadData.phone || '',
+      company: leadData.company || '',
+      status: leadData.status || 'new',
+      source: leadData.source || 'Manual',
+      value: leadData.value || 0,
+      createdAt: new Date().toISOString().split('T')[0],
+      lastContact: new Date().toISOString().split('T')[0],
+      notes: leadData.notes || '',
+      tags: leadData.tags || [],
+      assignedTo: leadData.assignedTo || '',
+      owner: leadData.owner || '',
+      nextAction: leadData.nextAction || '',
+      lastActivity: new Date().toISOString().split('T')[0],
+    };
+    setLeads(prev => [newLead, ...prev]);
+    setShowAddModal(false);
+  };
+
+  const handleEditLead = (leadData: Partial<Lead>) => {
+    if (!selectedLead) return;
+    
+    const updatedLead: Lead = {
+      ...selectedLead,
+      ...leadData,
+    };
+    
+    setLeads(prev => prev.map(lead => 
+      lead.id === selectedLead.id ? updatedLead : lead
+    ));
+    setShowEditModal(false);
+    setSelectedLead(null);
+  };
+
+  const handleDeleteLead = (leadId: string) => {
+    if (window.confirm('Are you sure you want to delete this lead?')) {
+      setLeads(prev => prev.filter(lead => lead.id !== leadId));
+    }
+  };
+
+  const handleBulkDelete = () => {
+    if (window.confirm(`Are you sure you want to delete ${selectedLeads.length} leads?`)) {
+      setLeads(prev => prev.filter(lead => !selectedLeads.includes(lead.id)));
+      setSelectedLeads([]);
+    }
+  };
+
+  const handleBulkStatusUpdate = (newStatus: Lead['status']) => {
+    setLeads(prev => prev.map(lead => 
+      selectedLeads.includes(lead.id) 
+        ? { ...lead, status: newStatus }
+        : lead
+    ));
+    setSelectedLeads([]);
+  };
+
+  const openDrawer = (lead: Lead) => {
+    setDrawerLead(lead);
+    setShowDrawer(true);
+  };
+
+  const closeDrawer = () => {
+    setDrawerLead(null);
+    setShowDrawer(false);
+  };
+
+  const openEditModal = (lead: Lead) => {
+    setSelectedLead(lead);
+    setShowEditModal(true);
+  };
 
   const totalValue = filteredLeads.reduce((sum, lead) => sum + lead.value, 0);
   const qualifiedLeads = filteredLeads.filter(lead => lead.status === 'qualified').length;
@@ -54,41 +140,6 @@ const Leads = () => {
     return (now.getTime() - last.getTime()) / (1000 * 60 * 60 * 24) > 7;
   }).length;
   const conversionRate = leads.length > 0 ? (leads.filter(l => l.status === 'converted').length / leads.length * 100).toFixed(1) : '0';
-
-  const openDrawer = (lead: Lead) => {
-    setDrawerLead(lead);
-    setShowDrawer(true);
-  };
-  const closeDrawer = () => {
-    setDrawerLead(null);
-    setShowDrawer(false);
-  };
-
-  const handleLeadWizardComplete = (wizardData: any) => {
-    const newLead: Lead = {
-      id: Date.now().toString(),
-      name: wizardData.contact.firstName + ' ' + wizardData.contact.lastName,
-      company: wizardData.company.name,
-      email: wizardData.contact.email,
-      phone: wizardData.contact.phone,
-      status: 'new',
-      source: 'manual',
-      value: wizardData.documentDetails.items.reduce((sum: number, item: any) => sum + Number(item.price) * Number(item.quantity), 0),
-      createdAt: new Date().toISOString().split('T')[0],
-      lastContact: new Date().toISOString().split('T')[0],
-      notes: wizardData.documentDetails.notes || '',
-      tags: [],
-      assignedTo: '',
-      owner: '',
-      nextAction: '',
-      lastActivity: new Date().toISOString().split('T')[0],
-    };
-    setLeads(prev => {
-      const updated = [newLead, ...prev];
-      localStorage.setItem('leads', JSON.stringify(updated));
-      return updated;
-    });
-  };
 
   return (
     <div className="space-y-6 p-6 bg-slate-50 min-h-screen">
@@ -126,7 +177,7 @@ const Leads = () => {
           </div>
         </div>
         <div className="bg-white p-6 rounded-xl border-2 border-slate-300 shadow-lg">
-          <div className="text-2xl font-black text-blue-600">${totalValue.toLocaleString()}</div>
+          <div className="text-2xl font-black text-blue-600">P{totalValue.toLocaleString()}</div>
           <div className="text-sm text-slate-600 font-semibold">
             Pipeline Value
           </div>
@@ -200,7 +251,12 @@ const Leads = () => {
         </div>
         <button
           className="ml-auto px-4 py-2 rounded-lg transition-colors border-2 border-slate-300 bg-slate-100 text-slate-700 hover:bg-slate-200 hover:border-slate-400 font-bold"
-          onClick={() => { setStatusFilter(''); setOwnerFilter(''); setTagFilter(''); setSearchTerm(''); }}
+          onClick={() => { 
+            setStatusFilter(''); 
+            setOwnerFilter(''); 
+            setTagFilter(''); 
+            setSearchTerm(''); 
+          }}
         >
           Clear Filters
         </button>
@@ -211,16 +267,44 @@ const Leads = () => {
           <span className="font-black text-blue-700">
             {selectedLeads.length} selected
           </span>
-          <button className="hover:underline font-bold text-blue-600">
-            Bulk Email
+          <button 
+            onClick={() => setShowBulkActions(!showBulkActions)}
+            className="hover:underline font-bold text-blue-600 flex items-center gap-1"
+          >
+            Bulk Actions
+            {showBulkActions ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
           </button>
-          <button className="hover:underline font-bold text-blue-600">
-            Bulk Assign
-          </button>
-          <button className="hover:underline font-bold text-blue-600">
-            Bulk Status
-          </button>
-          <button className="hover:underline font-bold text-red-600" onClick={clearAll}>
+          {showBulkActions && (
+            <div className="flex items-center gap-2">
+              <select
+                onChange={(e) => {
+                  if (e.target.value) {
+                    handleBulkStatusUpdate(e.target.value as Lead['status']);
+                    e.target.value = '';
+                  }
+                }}
+                className="px-3 py-1 border border-blue-300 rounded text-sm"
+              >
+                <option value="">Change Status</option>
+                <option value="new">New</option>
+                <option value="contacted">Contacted</option>
+                <option value="qualified">Qualified</option>
+                <option value="proposal">Proposal</option>
+                <option value="converted">Converted</option>
+                <option value="lost">Lost</option>
+              </select>
+              <button 
+                onClick={handleBulkDelete}
+                className="px-3 py-1 bg-red-600 text-white rounded text-sm hover:bg-red-700"
+              >
+                Delete Selected
+              </button>
+            </div>
+          )}
+          <button 
+            onClick={clearAll}
+            className="hover:underline font-bold text-red-600"
+          >
             Clear
           </button>
         </div>
@@ -274,7 +358,7 @@ const Leads = () => {
                   </span>
                 </td>
                 <td className="p-3 font-bold text-slate-900 border-r border-slate-200">
-                  ${lead.value.toLocaleString()}
+                  P{lead.value.toLocaleString()}
                 </td>
                 <td className="p-3 text-slate-700 font-medium border-r border-slate-200">
                   {lead.source}
@@ -304,19 +388,39 @@ const Leads = () => {
                   {lead.lastContact}
                 </td>
                 <td className="p-3 flex gap-2">
-                  <button className="text-blue-600 hover:text-blue-800 p-1 rounded border-2 border-blue-300 hover:bg-blue-50 hover:border-blue-400" title="View" onClick={() => openDrawer(lead)}>
+                  <button 
+                    onClick={() => openDrawer(lead)}
+                    className="text-blue-600 hover:text-blue-800 p-1 rounded border-2 border-blue-300 hover:bg-blue-50 hover:border-blue-400" 
+                    title="View"
+                  >
                     <Eye size={16} />
                   </button>
-                  <button className="text-green-600 hover:text-green-800 p-1 rounded border-2 border-green-300 hover:bg-green-50 hover:border-green-400" title="Call">
+                  <button 
+                    onClick={() => window.open(`tel:${lead.phone}`)}
+                    className="text-green-600 hover:text-green-800 p-1 rounded border-2 border-green-300 hover:bg-green-50 hover:border-green-400" 
+                    title="Call"
+                  >
                     <Phone size={16} />
                   </button>
-                  <button className="text-indigo-600 hover:text-indigo-800 p-1 rounded border-2 border-indigo-300 hover:bg-indigo-50 hover:border-indigo-400" title="Email">
+                  <button 
+                    onClick={() => window.open(`mailto:${lead.email}`)}
+                    className="text-indigo-600 hover:text-indigo-800 p-1 rounded border-2 border-indigo-300 hover:bg-indigo-50 hover:border-indigo-400" 
+                    title="Email"
+                  >
                     <Mail size={16} />
                   </button>
-                  <button className="text-yellow-600 hover:text-yellow-800 p-1 rounded border-2 border-yellow-300 hover:bg-yellow-50 hover:border-yellow-400" title="Edit">
+                  <button 
+                    onClick={() => openEditModal(lead)}
+                    className="text-yellow-600 hover:text-yellow-800 p-1 rounded border-2 border-yellow-300 hover:bg-yellow-50 hover:border-yellow-400" 
+                    title="Edit"
+                  >
                     <Edit size={16} />
                   </button>
-                  <button className="text-red-600 hover:text-red-800 p-1 rounded border-2 border-red-300 hover:bg-red-50 hover:border-red-400" title="Delete" onClick={() => setLeads(leads.filter(l => l.id !== lead.id))}>
+                  <button 
+                    onClick={() => handleDeleteLead(lead.id)}
+                    className="text-red-600 hover:text-red-800 p-1 rounded border-2 border-red-300 hover:bg-red-50 hover:border-red-400" 
+                    title="Delete"
+                  >
                     <Trash2 size={16} />
                   </button>
                 </td>
@@ -331,6 +435,7 @@ const Leads = () => {
         )}
       </div>
 
+      {/* Lead Detail Drawer */}
       {showDrawer && drawerLead && (
         <div className="fixed inset-0 z-50 flex">
           <div className="bg-black/30 w-full h-full" onClick={closeDrawer}></div>
@@ -375,6 +480,12 @@ const Leads = () => {
                 </span>
               </div>
               <div className="p-4 border-2 border-slate-300 rounded-lg bg-slate-50">
+                <div className="text-sm text-slate-500 font-semibold">Value</div>
+                <div className="font-bold text-slate-900">
+                  P{drawerLead.value.toLocaleString()}
+                </div>
+              </div>
+              <div className="p-4 border-2 border-slate-300 rounded-lg bg-slate-50">
                 <div className="text-sm text-slate-500 font-semibold">Owner</div>
                 <div className="font-bold text-slate-900">
                   {drawerLead.owner}
@@ -412,8 +523,17 @@ const Leads = () => {
                 </div>
               </div>
             </div>
-            <div className="flex justify-end mt-8">
-              <button onClick={closeDrawer} className="px-4 py-2 border-2 border-slate-300 rounded-lg transition-colors font-bold bg-white text-slate-900 hover:bg-slate-50 hover:border-slate-400">
+            <div className="flex justify-end mt-8 gap-3">
+              <button 
+                onClick={() => openEditModal(drawerLead)}
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-bold"
+              >
+                Edit Lead
+              </button>
+              <button 
+                onClick={closeDrawer} 
+                className="px-4 py-2 border-2 border-slate-300 rounded-lg transition-colors font-bold bg-white text-slate-900 hover:bg-slate-50 hover:border-slate-400"
+              >
                 Close
               </button>
             </div>
@@ -421,8 +541,28 @@ const Leads = () => {
         </div>
       )}
 
+      {/* Add Lead Modal */}
       {showAddModal && (
-        <LeadWizardModal open={showAddModal} onClose={() => setShowAddModal(false)} onComplete={handleLeadWizardComplete} />
+        <LeadModal
+          isOpen={showAddModal}
+          onClose={() => setShowAddModal(false)}
+          onSubmit={handleAddLead}
+          title="Add New Lead"
+        />
+      )}
+
+      {/* Edit Lead Modal */}
+      {showEditModal && selectedLead && (
+        <LeadModal
+          isOpen={showEditModal}
+          onClose={() => {
+            setShowEditModal(false);
+            setSelectedLead(null);
+          }}
+          onSubmit={handleEditLead}
+          title="Edit Lead"
+          initialData={selectedLead}
+        />
       )}
     </div>
   );
